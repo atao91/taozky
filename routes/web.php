@@ -24,9 +24,4 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
 });
 Route::get('register', 'RegisterController@register')->name('register');  //会员设置
-
 Route::post('login', 'Auth\LoginController@login')->name('login');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

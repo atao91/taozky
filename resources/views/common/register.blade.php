@@ -47,7 +47,7 @@
             </div>
 
             <div class="form-group">
-                <label for="password" >{{ __('Password') }}</label>
+                <label for="password" >{{ __('密码') }}</label>
                 <input type="password" name="password" class="form-control"  required autocomplete="new-password">
                 @error('password')
                     <span class="invalid-feedback" style="color: red" role="alert">
@@ -57,7 +57,7 @@
             </div>
 
             <div class="form-group">
-                <label for="password-confirm" >{{ __('Confirm Password') }}</label>
+                <label for="password-confirm" >{{ __('重复密码') }}</label>
                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
             </div>
 
@@ -67,7 +67,7 @@
                 <input type="text" class="form-control" name="yq" value="{{ request()->t }}" readonly>
             </div>
             <button type="submit" class="weui-btn weui-btn_warn btn-primary">
-                {{ __('Register') }}
+                {{ __('立即注册') }}
             </button>
         </form>
     </div>
