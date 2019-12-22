@@ -41,7 +41,7 @@ class User extends Authenticatable
     ];
 
     public static function getUserNo(){
-        $count = DB::table('tzk_users')->whereBetween('created_at',[date("Y-m-d 00:00:00"),date("Y-m-d 23:59:59")])->count();
+        $count = (new static())->whereBetween('created_at',[date("Y-m-d 00:00:00"),date("Y-m-d 23:59:59")])->count();
         return 'TZK'.date("Ymd").str_pad($count+1,4,"0",STR_PAD_LEFT);
     }
 }
