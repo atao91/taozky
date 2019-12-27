@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TzkUserDraw extends Model
 {
-    protected $table = 'tz_user_draw';
+    protected $table = 'tzk_user_draw';
 
     public function users(){
         return $this->belongsTo(User::class,'user_id','id');

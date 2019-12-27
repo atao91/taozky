@@ -78,7 +78,13 @@
                             <p class="weui-uploader__title">淘宝等级截图上传</p>
                         </div>
                         <div class="weui-uploader__bd">
-                            <input id="fileImage" class="fileImage" type="file"  name="level_img" accept="image/*" capture="camera" size="30" required="1">
+                            <label for="uploadImg"><div class="btn btn-default btn-dark">上传图片</div></label>
+                            <img id="imgShow" src="@if(isset($data)) {!! env('APP_URL').$data->goods_img !!} @endif" alt="" style="max-width:150px;max-height: 150px ">
+                            <input id="uploadImg" type="file" name="files" accept="image/*" style="display: none;" />
+                            @if(isset($data))
+                                <input type="hidden" name="refund_img" value="{!! $data->refund_img !!}">
+                            @endif
+{{--                            <input id="fileImage" class="fileImage" type="file"  name="level_img" accept="image/*" capture="camera" size="30" required="1">--}}
                         </div>
                     </div>
                 </div>
@@ -122,6 +128,7 @@
 @section('footerJs')
 
     <script src="../js/city-picker.js"></script>
+    <script src="/js/upload.js"></script>
     <script>
         $("#bank_addr").cityPicker({
             title: "收货地址",
@@ -129,5 +136,12 @@
                 console.log(values, displayValues);
             }
         });
+        uploadImg({
+            maxNum: 680, //压缩后照片 最大宽度/高度
+            rate: 0.8, //清晰度比率 0-1 越小照片大小越小但越不清晰 默认0.8
+            callback: function (baseUrl) { // 回调函数返回压缩成功后的
+                $("#imgShow").attr("src", baseUrl);
+            }
+        })
     </script>
 @stop

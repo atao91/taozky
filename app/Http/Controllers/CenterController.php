@@ -25,6 +25,8 @@ class CenterController extends Controller
 
     public function centerStore(Request $request){
         try{
+            $id_card_z = $this->base64_image_content($request->id_card_z);
+            $id_card_f = $this->base64_image_content($request->id_card_f);
             $UserModel = User::find(Auth::user()->id);
             $UserModel->user_level	=	$request->user_level;
             $UserModel->card_id	=	$request->card_id;
@@ -32,11 +34,16 @@ class CenterController extends Controller
             $UserModel->bank_no	=	$request->bank_no;
             $UserModel->bank_addr	=	$request->bank_addr;
             $UserModel->bank_branch	=	$request->bank_branch;
-            $UserModel->qq	=	$request->qq;
+            $UserModel->id_card_z	=	$id_card_z;
+            $UserModel->id_card_f	=	$id_card_f;
             $UserModel->save();
+            return response()->json(['status'=>100,'message'=>'保存成功']);
         } catch(\Illuminate\Database\QueryException $ex) {
+            Log::error($ex->getMessage());
+            return response()->json(['status'=>400,'message'=>'保存错误']);
         }
-        return redirect('setting');
+//
+//        return redirect('setting');
     }
 
     /*
@@ -188,6 +195,25 @@ class CenterController extends Controller
     public function refund_list(){
         $data = TzkUserDraw::where('user_id',Auth::user()->id)->paginate(10);
         return view('pages.refund_list',['data'=>$data]);
+    }
+
+
+    /**
+     * [将Base64图片转换为本地图片并保存]
+     * @param  [Base64] $base64_image_content [要保存的Base64]
+     * @param  [目录] $path [要保存的路径]
+     */
+    public function base64_image_content($base64_image_content){
+        $path = '/uploads';
+        //匹配出图片的格式
+        if (preg_match('/^(data:\s*image\/(\w+);base64,)/', $base64_image_content, $result)){
+            $type = $result[2];
+            $FileName = date('Y-m-d') .'/'. uniqid() . '.' . $type; //定义文件名
+            Storage::disk('admin')->put($FileName, base64_decode(str_replace($result[1], '', $base64_image_content)));//存储文件
+            return $path . '/' . $FileName;
+        }else{
+            return $base64_image_content;
+        }
     }
 }
 

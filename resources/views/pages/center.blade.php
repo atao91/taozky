@@ -122,20 +122,20 @@
         <!-- 列表 -->
         <div class="user-list-sm">
             <a class="weui-cells">
-{{--                <a class="weui-cell weui-cell_access" href="{{ route('refund') }}">--}}
-{{--                    <div class="weui-cell__bd">--}}
-{{--                        <i class="fa fa-money"></i>我的钱包--}}
-{{--                    </div>--}}
-{{--                    <div class="weui-cell__ft">--}}
-{{--                    </div>--}}
-{{--                </a>--}}
-{{--                <a class="weui-cell weui-cell_access" href="{{ route('refund_list') }}">--}}
-{{--                    <div class="weui-cell__bd">--}}
-{{--                        <i class="fa fa-money"></i>提现列表--}}
-{{--                    </div>--}}
-{{--                    <div class="weui-cell__ft">--}}
-{{--                    </div>--}}
-{{--                </a>--}}
+                <a class="weui-cell weui-cell_access" href="{{ route('refund') }}">
+                    <div class="weui-cell__bd">
+                        <i class="fa fa-money"></i>我的钱包
+                    </div>
+                    <div class="weui-cell__ft">
+                    </div>
+                </a>
+                <a class="weui-cell weui-cell_access" href="{{ route('refund_list') }}">
+                    <div class="weui-cell__bd">
+                        <i class="fa fa-money"></i>提现列表
+                    </div>
+                    <div class="weui-cell__ft">
+                    </div>
+                </a>
 
 
                 {{--                <div class="weui-cell weui-cell_access">--}}

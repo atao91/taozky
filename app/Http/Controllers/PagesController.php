@@ -66,6 +66,7 @@ class PagesController extends Controller
                 $date2 = strtotime($liuc_arr->created_at);
                 $diff= $date1 - $date2 ;
                 $days =abs(intval($diff / 86400));
+
                 if($liuc_arr->works->orders->templates_id == $work_arr->orders->templates_id){
                     //计算两个日期之间的时间差
                     if($days < 1){
