@@ -22,6 +22,10 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::post('check_goods', 'WorkController@check_goods')->name('check_goods');  //核对商品
     Route::post('uploader', 'UploadimagesController@uploader')->name('uploader');  //绑定提交   图片提交
 
+    Route::get('contacts', 'CenterController@contacts')->name('contacts');  //联系客服
+    Route::get('changePwd', 'CenterController@changePwd')->name('changePwd');  //会员设置
+    Route::post('pwdStore', 'CenterController@pwdStore')->name('pwdStore');  //会员设置
+
 });
 Route::get('register', 'RegisterController@register')->name('register');  //会员设置
 Route::post('login', 'Auth\LoginController@login')->name('login');

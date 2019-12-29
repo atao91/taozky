@@ -1,8 +1,20 @@
 @extends('layouts.app')
 @section('title', '个人设置')
-
 @section('content')
     <style>
+        #choose{display: none;}
+        #upload{display: block;margin: 10px;height: 60px;text-align: center;line-height: 60px;border: 1px solid;border-radius: 5px;cursor: pointer;}
+        .touch{background-color: #ddd;}
+        .img-list{margin: 10px 5px;}
+        .img-list li{position: relative;display: inline-block;width: 100px;height: 100px;margin: 5px 5px 20px 5px;border: 1px solid rgb(100,149,198);background: #fff no-repeat center;background-size: cover;}
+        .progress{position: absolute;width: 100%;height: 20px;line-height: 20px;bottom: 0;left: 0;background-color:rgba(100,149,198,.5);}
+        .progress span{display: block;width: 0;height: 100%;background-color:rgb(100,149,198);text-align: center;color: #FFF;font-size: 13px;}
+        .size{position: absolute;width: 100%;height: 15px;line-height: 15px;bottom: -18px;text-align: center;font-size: 13px;color: #666;}
+        .tips{display: block;text-align:center;font-size: 13px;margin: 10px;color: #999;}
+        .pic-list{margin: 10px;line-height: 18px;font-size: 13px;}
+        .pic-list a{display: block;margin: 10px 0;}
+        .pic-list a img{vertical-align: middle;max-width: 30px;max-height: 30px;margin: -4px 0 0 10px;}
+
         .weui-cell__bd{
             text-align: right;
         }
@@ -45,6 +57,7 @@
         </div>
     </div>
     <div class="weui-cells" style="padding-bottom: 5px;">
+
         <div class="weui-cell weui-cell_access" href="javascript:;">
             <div class="weui-cell__hd"><p>账号名称</p></div>
             <div class="weui-cell__bd"><input class="weui-input" id="name" type="text" name="name" value="{{ Auth::user()->name }}" required="1" readonly></div>
@@ -77,6 +90,11 @@
             <div class="weui-cell__ft"></div>
         </div>
         <div class="weui-cell weui-cell_access" href="javascript:;">
+            <div class="weui-cell__hd"><p>真实姓名</p></div>
+            <div class="weui-cell__bd"><input class="weui-input" id="username" type="text" name="username" value="{{ Auth::user()->username }}" required="1"></div>
+            <div class="weui-cell__ft"></div>
+        </div>
+        <div class="weui-cell weui-cell_access" href="javascript:;">
             <div class="weui-cell__bd"><p>开户银行</p></div>
             <div class="weui-cell__bd"><input class="weui-input" id="bank_open" type="text" name="bank_open" value="{{ Auth::user()->bank_open }}" required="1"></div>
             <div class="weui-cell__ft"></div>
@@ -102,31 +120,26 @@
         <div class="weui-cell weui-cell_access" href="javascript:;">
             <div class="weui-cell__hd weui-media-box__title"><p>身份证正面</p></div>
             <div class="weui-cell__bd weui-media-box__desc">
-                @if(Auth::user()->id_card_z)
-                <ul class="weui_uploader_files uploader_id_card_z" id="uploaderFiles ">
-                    <li class="id_card_z weui_uploader_file" style="background-image:url('{!! env('APP_URL').Auth::user()->id_card_z !!}')"></li>
-                    <input type="hidden" name="id_card_z_img" id="id_card_z_img" value="{!! Auth::user()->id_card_z !!}">
+                <ul class="weui_uploader_files uploader_idcard_img_z" id="uploaderFiles ">
+                    <li class="weui_uploader_file" style="background-image:url({{ Auth::user()->id_card_z }})"></li>
                 </ul>
-                @else
-                <div class="weui_uploader_input_wrp">
-                    <input class="weui_uploader_input id_card_z" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" >
-                </div>
+                @if(empty(Auth::user()->id_card_z))
+                    <div class="weui_uploader_input_wrp">
+                        <input class="weui_uploader_input idcard_img_z" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" >
+                    </div>
                 @endif
             </div>
         </div>
-
         <div class="weui-cell weui-cell_access" href="javascript:;">
             <div class="weui-cell__hd weui-media-box__title"><p>身份证反面</p></div>
             <div class="weui-cell__bd weui-media-box__desc">
-                @if(Auth::user()->id_card_z)
-                    <ul class="weui_uploader_files uploader_id_card_f" id="uploaderFiles ">
-                        <li class="id_card_f weui_uploader_file" style="background-image:url('{!! env('APP_URL').Auth::user()->id_card_f !!}')"></li>
-                        <input type="hidden" name="id_card_f_img" id="id_card_f_img" value="{!! Auth::user()->id_card_f !!}">
-                    </ul>
-                @else
+                <ul class="weui_uploader_files uploader_idcard_img_f" id="uploaderFiles ">
+                    <li class="weui_uploader_file" style="background-image:url({{ Auth::user()->id_card_f }})"></li>
+                </ul>
+                @if(empty(Auth::user()->id_card_f))
                     <div class="weui_uploader_input_wrp">
-                    <input class="weui_uploader_input id_card_f" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" >
-                </div>
+                        <input class="weui_uploader_input idcard_img_f" type="file" accept="image/jpg,image/jpeg,image/png,image/gif" >
+                    </div>
                 @endif
             </div>
         </div>
@@ -136,9 +149,16 @@
 {{--            <div class="weui-cell__ft"></div>--}}
 {{--        </div>--}}
         <div class="user-exit" style="margin-bottom:80px">
-            <input type="hidden" name="id_card_z" class="val_id_card_z" id="val_id_card_z" value="" required="1">
-            <input type="hidden" name="id_card_f" class="val_id_card_f" id="val_id_card_f" value="" required="1">
-
+            @if(Auth::user()->id_card_z)
+                <input type="hidden" name="id_card_z_img" class="id_card_z_img" id="id_card_z_img" value="{{ Auth::user()->id_card_z }}" required="1">
+                @else
+                <input type="hidden" name="id_card_z" class="val_id_card_z" id="val_id_card_z" value="" required="1">
+            @endif
+            @if(Auth::user()->id_card_f)
+                <input type="hidden" name="id_card_f_img" class="id_card_f_img" id="id_card_f_img" value="{{ Auth::user()->id_card_f }}" required="1">
+            @else
+                <input type="hidden" name="id_card_f" class="val_id_card_f" id="val_id_card_f" value="" required="1">
+            @endif
             <input type="submit"  class="weui-btn weui-btn_warn" value="保存">
         </div>
 
@@ -159,13 +179,6 @@
                 console.log(values, displayValues);
             }
         });
-
-        $("#bank_addr").cityPicker({
-            title: "收货地址",
-            onChange: function (picker, values, displayValues) {
-                console.log(values, displayValues);
-            }
-        });
         $(function () {
             // 允许上传的图片类型
             allowTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
@@ -175,18 +188,17 @@
             maxWidth = 300;
             // 最大上传图片数量
             maxCount = 1;
-            $('.id_card_z').on('change', function (event) {
+            //身份证正面
+            $('.idcard_img_z').on('change', function (event) {
                 var files = event.target.files;
-                update_img(files,'uploader_id_card_z','val_id_card_z');
+                update_img(files,'uploader_idcard_img_z','val_id_card_z');
             });
-
-            $('.id_card_f').on('change', function (event) {
+            //身份证反面
+            $('.idcard_img_f').on('change', function (event) {
                 var files = event.target.files;
-                update_img(files,'uploader_id_card_f','val_id_card_f');
+                update_img(files,'uploader_idcard_img_f','val_id_card_f');
             });
         });
-
-
         function update_img(files,$obj,$val){
             // 如果没有选中文件，直接返回
             if (files.length === 0) {
@@ -256,6 +268,7 @@
             var card_id = $('#card_id').val();
             var bank_open = $('#bank_open').val();
             var phone = $('#phone').val();
+            var username = $('#username').val();
             var bank_no = $('#bank_no').val();
             var bank_addr = $('#bank_addr').val();
             var bank_branch = $('#bank_branch').val();
@@ -266,13 +279,13 @@
             var id_card_img_zm = id_card_z?id_card_z:id_card_z_img;
             var id_card_img_fm = id_card_f?id_card_f:id_card_f_img;
 
-
-            if(user_level && card_id && bank_open && phone && bank_no && bank_addr && bank_branch && id_card_img_zm && id_card_img_fm){
+            if(user_level && card_id && bank_open && phone && username && bank_no && bank_addr && bank_branch && id_card_img_zm && id_card_img_fm){
                 var data = {
                     'user_level':user_level,
                     'card_id':card_id,
                     'bank_open':bank_open,
                     'phone':phone,
+                    'username':username,
                     'bank_no':bank_no,
                     'bank_addr':bank_addr,
                     'bank_branch':bank_branch,

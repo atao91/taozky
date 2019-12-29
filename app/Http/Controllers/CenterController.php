@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-//use App\Http\Requests\TzUsersRequest;
 use App\Models\TzkUserAli;
 use App\Models\TzkUserBill;
 use App\Models\TzkUserDraw;
@@ -9,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,20 +18,20 @@ class CenterController extends Controller
         $userali = TzkUserAli::where(['user_id'=>Auth::user()->id,'status'=>'0'])->first();
         return view('pages.center',['userali'=>$userali]);
     }
-
     public function setting(){
         return view('pages.setting');
     }
-
     public function centerStore(Request $request){
         try{
             $id_card_z = $this->base64_image_content($request->id_card_z);
             $id_card_f = $this->base64_image_content($request->id_card_f);
             $UserModel = User::find(Auth::user()->id);
             $UserModel->user_level	=	$request->user_level;
-            $UserModel->card_id	=	$request->card_id;
+            $UserModel->card_id	    =	$request->card_id;
+            $UserModel->username	=	$request->username;
+            $UserModel->phone	    =	$request->phone;
             $UserModel->bank_open	=	$request->bank_open;
-            $UserModel->bank_no	=	$request->bank_no;
+            $UserModel->bank_no	    =	$request->bank_no;
             $UserModel->bank_addr	=	$request->bank_addr;
             $UserModel->bank_branch	=	$request->bank_branch;
             $UserModel->id_card_z	=	$id_card_z;
@@ -42,106 +42,71 @@ class CenterController extends Controller
             Log::error($ex->getMessage());
             return response()->json(['status'=>400,'message'=>'保存错误']);
         }
-//
-//        return redirect('setting');
     }
-
     /*
      * 推广
      */
     public function share(){
         return view('pages.share');
     }
-
     /*
      * 绑定
      */
     public function bindTb(){
-        return view('pages.band_tb');
+        $data = TzkUserAli::where('user_id',Auth::user()->id)->first();
+        return view('pages.band_tb',['data'=>$data]);
     }
     /*
      * 绑定提交
      */
     public function bindStore(Request $request){
-
         try{
+            $level_img = $this->base64_image_content($request->level_img);
+            $ali_auth = $this->base64_image_content($request->ali_auth);
+            $huab_auth = $this->base64_image_content($request->huab_auth);
             $data   = [
-              'user_id'  => Auth::user()->id,
-              'ali_name' => $request->ali_name,
-              'ali_level'  => $request->ali_level,
-              'sex'  => $request->sex,
-              'consignee'  => $request->consignee,
-              'phone'  => $request->phone,
-              'sh_addr' => $request->bank_addr,
-              'address'  => $request->address,
-              'status' => 2,
-              'created_at' => date("Y-m-d H:i:s"),
-              'updated_at' => date("Y-m-d H:i:s"),
+                'ali_name'  => $request->ali_name,
+                'ali_level'  => $request->ali_level,
+                'sex'  => $request->sex,
+                'consignee'  => $request->consignee,
+                'phone'  => $request->phone,
+                'bank_addr'  => $request->bank_addr,
+                'address'  => $request->address,
+                'sh_addr'  => $request->sh_addr,
+                'status' => 0,
+                'user_id' => Auth::user()->id,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
             ];
-//                    $level_img =  $request->file('level_img');
-//            $extension = $level_img -> guessExtension();
-//            $rand = rand('0000','9999');
-//            $newName = time().'-'.$rand.".".$extension;
-//            $nowDay = date('Y-m-d');
-//            $level_img -> move(base_path().'/storage/app/public/upload/images/'.$nowDay.'/',$newName);
-//            $data['level_img'] = 'images/'.$nowDay.'/'.$newName;
-
-            if (!empty($request->file('level_img'))){
-                $tmp = $request->file('level_img');
-                $path = '/uploads';
-                if ($tmp->isValid()) { //判断文件上传是否有效
-                    $FileType = $tmp->getClientOriginalExtension(); //获取文件后缀
-                    $FilePath = $tmp->getRealPath(); //获取文件临时存放位置
-                    $FileName = date('Y-m-d') .'/'. uniqid() . '.' . $FileType; //定义文件名
-                    Storage::disk('admin')->put($FileName, file_get_contents($FilePath)); //存储文件
-                    $data['level_img']  = $path . '/' . $FileName;
-                }
-            }else{
-                $data['level_img'] = $request->level_img;
-            }
-
-            if (!empty($request->file('ali_auth'))){
-                $tmp = $request->file('ali_auth');
-                $path = '/uploads';
-                if ($tmp->isValid()) { //判断文件上传是否有效
-                    $FileType = $tmp->getClientOriginalExtension(); //获取文件后缀
-                    $FilePath = $tmp->getRealPath(); //获取文件临时存放位置
-                    $FileName = date('Y-m-d') .'/'. uniqid() . '.' . $FileType; //定义文件名
-                    Storage::disk('admin')->put($FileName, file_get_contents($FilePath)); //存储文件
-                    $data['ali_auth']  = $path . '/' . $FileName;
-                }
-            }else{
-                $data['ali_auth'] = $request->level_img;
-            }
+            $data['level_img']  =   $level_img;
+            $data['ali_auth']   =   $ali_auth;
+            $data['huab_auth']  =   $huab_auth;
             $res = DB::table('tzk_users_ali')->insert($data);
-        } catch(\Exception $ex) {
-            Log::warning($ex->getMessage());
+            return response()->json(['status'=>100,'message'=>'保存成功']);
+        } catch(\Exception $e) {
+            dd($e->getMessage());
+            Log::error($e->getMessage());
+            return response()->json(['status'=>400,'message'=>'保存错误']);
         }
-        return redirect('bindList');
+//        return redirect('bindList');
     }
     /*
      *  绑定列表
      */
     public function bindList(){
-
         $data = TzkUserAli::where('user_id',Auth::user()->id)->get();
         return view('pages.bindList',['data'=>$data]);
     }
-
-
     //账单
     public function bill(){
         $data = TzkUserBill::where('user_id',Auth::user()->id)->paginate(10);
         return view('pages.billList',['data'=>$data]);
     }
-
-
     //体现
     public function refund(){
         $data = User::where('id',Auth::user()->id)->select('amount')->first();
         return view('pages.refund',['data'=>$data]);
     }
-
     public function refund_apply(Request $request){
         $time = date("Y-m-d H:i:s");
         $status = false;
@@ -215,5 +180,32 @@ class CenterController extends Controller
             return $base64_image_content;
         }
     }
+
+    public function contacts(){
+        return view('pages.contacts');
+    }
+    //    修改密码
+    public function changePwd(){
+        return view('pages.changePwd');
+    }
+    public function pwdStore(Request $request){
+        try{
+            $oldPwd = Hash::make($request->oldpwd);
+            $newpwd = Hash::make($request->newcheckpwd);
+            $UserModel = User::find(Auth::user()->id);
+
+            dd($oldPwd,$UserModel->password);
+            if($oldPwd != $UserModel->password){
+                return response()->json(['status'=>400,'message'=>'密码错误']);
+            }
+            $UserModel->password	=	$newpwd;
+            $UserModel->save();
+            return response()->json(['status'=>100,'message'=>'修改成功']);
+        } catch(\Exception $ex) {
+            Log::error($ex->getMessage());
+            return response()->json(['status'=>400,'message'=>'修改失败']);
+        }
+    }
+
 }
 

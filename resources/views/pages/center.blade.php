@@ -4,7 +4,6 @@
 @section('content')
     <!-- 网站内容主体开始 -->
     <div class="mission">
-
         <div class="myhearder">
             <!-- 设置 -->
             <div class="user-install">
@@ -26,9 +25,7 @@
                     </a>
                 </div>
             </div>
-
         </div>
-
         <!-- 我的订单 -->
 {{--        <div class="weui-cells">--}}
 {{--            <a class="weui-cell weui-cell_access"  href="./user-order.html">--}}
@@ -95,33 +92,9 @@
 {{--        </div>--}}
         <!-- 我的订单 -->
 
-{{--        <!-- 我的钱包 -->--}}
-{{--        <div class="weui-cells ">--}}
-{{--            <a class="weui-cell weui-cell_access">--}}
-{{--                <div class="weui-cell__bd">--}}
-{{--                    <i class="fa fa-money"></i>我的钱包--}}
-{{--                </div>--}}
-{{--                <div class="weui-cell__ft">--}}
-{{--                </div>--}}
-{{--            </a>--}}
-{{--        </div>--}}
-{{--        <div class="weui-flex">--}}
-{{--            <div class="weui-flex__item">--}}
-{{--                <div class="placeholder">--}}
-{{--                    <a href="javascript:;" class="user-lists">--}}
-{{--                        <div class="ol">--}}
-{{--                            0.00--}}
-{{--                        </div>--}}
-{{--                        <p>余额</p>--}}
-{{--                    </a>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-        <!-- 我的钱包 -->
-
         <!-- 列表 -->
         <div class="user-list-sm">
-            <a class="weui-cells">
+            <div class="weui-cells">
                 <a class="weui-cell weui-cell_access" href="{{ route('refund') }}">
                     <div class="weui-cell__bd">
                         <i class="fa fa-money"></i>我的钱包
@@ -136,17 +109,6 @@
                     <div class="weui-cell__ft">
                     </div>
                 </a>
-
-
-                {{--                <div class="weui-cell weui-cell_access">--}}
-{{--                    <div class="weui-cell__hd">--}}
-{{--                        <i class="fa  fa-mortar-board (alias)"></i>--}}
-{{--                    </div>--}}
-{{--                    <div class="weui-cell__bd">--}}
-{{--                        <p>新手必看</p>--}}
-{{--                    </div>--}}
-{{--                    <div class="weui-cell__ft"></div>--}}
-{{--                </div>--}}
                 <a class="weui-cell weui-cell_access"  href="{{ route('bill') }}">
                     <div class="weui-cell__hd">
                         <i class="fa fa-rmb"></i>
@@ -156,10 +118,9 @@
                     </div>
                     <div class="weui-cell__ft"></div>
                 </a>
-                @if(isset($userali) && !in_array($userali->status,['0','2']))
+                @if(!isset($userali) || $userali->status == 1)
                 <a class="weui-cell weui-cell_access"  href="{{ route('bind') }}">
                     <div class="weui-cell__hd">
-{{--                        <img src="//cdn.tbzlc.com/binary/icon/taobao.png" alt="">--}}
                         <i class="fa fa-shopping-bag"></i>
                     </div>
                     <div class="weui-cell__bd">
@@ -183,6 +144,22 @@
                         <p>推广赚钱</p>
                     </div>
                 </a>
+                <a class="weui-cell weui-cell_access" href="{{ route('contacts') }}">
+                    <div class="weui-cell__hd">
+                        <i class="fa fa-share"></i>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <p>联系客服</p>
+                    </div>
+                </a>
+{{--                <a class="weui-cell weui-cell_access" href="{{ route('changePwd') }}">--}}
+{{--                    <div class="weui-cell__hd">--}}
+{{--                        <i class="fa fa-share"></i>--}}
+{{--                    </div>--}}
+{{--                    <div class="weui-cell__bd">--}}
+{{--                        <p>修改密码</p>--}}
+{{--                    </div>--}}
+{{--                </a>--}}
             </div>
             <!-- 安全退出 -->
             <div class="user-exit" style="margin-bottom: 80px">
