@@ -194,7 +194,7 @@ class CenterController extends Controller
             $newpwd = Hash::make($request->newcheckpwd);
             $UserModel = User::find(Auth::user()->id);
 
-            dd($oldPwd,$UserModel->password);
+
             if($oldPwd != $UserModel->password){
                 return response()->json(['status'=>400,'message'=>'密码错误']);
             }

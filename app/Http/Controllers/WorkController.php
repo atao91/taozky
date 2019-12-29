@@ -17,13 +17,14 @@ class WorkController extends Controller
             ->with(['works'=>function($q){
                 $q->with(['orders'=>function($qa){
                     $qa->with(['templates']);
-                }]);
+                },'sj']);
             },'ali']);
         if ($request->status){
-
             $model->whereIn('status',[$request->status]);
         }
         $data = $model->get();
+
+        dd($data);
         return view('pages.work_index',['data'=>$data]);
     }
 
@@ -33,10 +34,10 @@ class WorkController extends Controller
             ->with(['works'=>function($q){
                 $q->with(['orders'=>function($qa){
                     $qa->with(['templates']);
+                },'shangh'=>function($q){
+                    $q->select('id','username');
                 }]);
             },'ali'])->first();
-
-
         return view('pages.goods_detail',['data'=>$data]);
     }
 
@@ -89,7 +90,7 @@ class WorkController extends Controller
                 if($request->status == 1){
                     $message = '已提交,等待审核';
                     $work_data['status'] = 2;
-                }elseif($request->status == 5){
+                }elseif($request->status == 4){
                     $work_data['status'] = '0';
                     $message = '已取消';
                 }

@@ -23,5 +23,7 @@ class TzkWork extends Model
     public function orders(){
         return $this->belongsTo(TzkOrder::class,'order_id','id');
     }
-
+    public function shangh(){
+        return $this->belongsTo(TzkBusines::class,'user_id','id');
+    }
 }

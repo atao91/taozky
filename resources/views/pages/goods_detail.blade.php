@@ -234,9 +234,16 @@
 
                 </div>
             </div>
-
         @endif
+
     </div>
+    @if($data->status == 3)
+    <div class="weui-cell weui-cell_access" href="javascript:;">
+        <div class="weui-cell__hd weui-media-box__title"><p>联系商家</p></div>
+        <div class="weui-cell__bd weui-media-box__desc">{{ $data->works->shangh->username }}</div>
+    </div>
+    @endif
+
 
     @if($data->status == 2)
     <div class="user-exit" >
@@ -272,7 +279,7 @@
     </div>
     <div class="weui-panel weui-panel_access" style="margin-bottom:80px">
         <div class="weui-cell weui-cell_access" href="javascript:;">
-            <input type="submit"  class="weui-btn weui-btn_warn"  onclick="saveWork(5)"  value="取消任务">
+            <input type="submit"  class="weui-btn weui-btn_warn"  onclick="saveWork(4)"  value="取消任务">
         </div>
     </div>
     @endif
@@ -288,8 +295,6 @@
         function saveWork(type){
             initData(type);
         }
-
-
         function initData(type){
             var data = new Object();
             data._token         = $('.token').val();
