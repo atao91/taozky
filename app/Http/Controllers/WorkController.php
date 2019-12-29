@@ -37,6 +37,7 @@ class WorkController extends Controller
                     $q->select('id','username');
                 }]);
             },'ali'])->first();
+
         return view('pages.goods_detail',['data'=>$data]);
     }
 
@@ -57,11 +58,13 @@ class WorkController extends Controller
                 'goods_img' =>  $request->goods_img,
                 'shop_img'  =>  $request->shop_img,
                 'pay_img' =>  $request->pay_img,
+                'pay_price' =>  $request->pay_price,
                 'talk_img'  =>  $request->talk_img,
                 'carriage_img'  =>  $request->carriage_img,
                 'status'  =>  $request->status,
                 'updated_at'	=> $time,
             ];
+
             if($request->status ==1){
                 foreach ($data as $k => $v){
                     if(empty($v)){
