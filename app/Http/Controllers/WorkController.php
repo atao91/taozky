@@ -17,14 +17,13 @@ class WorkController extends Controller
             ->with(['works'=>function($q){
                 $q->with(['orders'=>function($qa){
                     $qa->with(['templates']);
-                },'sj']);
+                }]);
             },'ali']);
         if ($request->status){
             $model->whereIn('status',[$request->status]);
         }
         $data = $model->get();
 
-        dd($data);
         return view('pages.work_index',['data'=>$data]);
     }
 
