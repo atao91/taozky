@@ -57,7 +57,6 @@ class WorkController extends Controller
                 'goods_img' =>  $request->goods_img,
                 'shop_img'  =>  $request->shop_img,
                 'pay_img' =>  $request->pay_img,
-                'pay_price' =>  $request->pay_price,
                 'talk_img'  =>  $request->talk_img,
                 'carriage_img'  =>  $request->carriage_img,
                 'status'  =>  $request->status,
@@ -76,7 +75,6 @@ class WorkController extends Controller
                 }
             }
             $res = DB::table('tzk_liucheng')->where('id',$request->d)->update($data);
-
             //保存
             if($request->status == 2){
                 $message = '保存成功';
@@ -108,12 +106,11 @@ class WorkController extends Controller
         ];
         return response()->json($response);
     }
-
+    //确认商品
     public function check_goods(Request $request){
-        $data = TzkWork::where('id',$request->d)->with(['orders'=>function($q){
+        $data = TzkWork::where('id',$request->work_id)->with(['orders'=>function($q){
             $q->with(['templates']);
         }])->first();
-
         $status = false;
         $message = '错误';
         if(strstr($data->orders->templates->goods_url,$request->goods_name)){
@@ -121,7 +118,6 @@ class WorkController extends Controller
             $message = '正确';
             TzkLiuc::where('id',$request->d)->update(['check_url'=>$request->goods_name]);
         }
-
         $response = [
             'status'  => $status,
             'message' => $message,
