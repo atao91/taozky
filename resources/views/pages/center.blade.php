@@ -118,7 +118,7 @@
                     </div>
                     <div class="weui-cell__ft"></div>
                 </a>
-                @if(!isset($userali) || $userali->status == 1)
+                @if(!isset($userali) || $userali->status == 0)
                 <a class="weui-cell weui-cell_access"  href="{{ route('bind') }}">
                     <div class="weui-cell__hd">
                         <i class="fa fa-shopping-bag"></i>
