@@ -29,7 +29,7 @@
                     <div class="weui-media-box__bd">
                         <h4 class="weui-media-box__title"> {!! $v->ali_name  !!}</h4>
                         <p class="weui-media-box__desc"><img src="//cdn.tbzlc.com/binary//level/level_{!! $v->ali_level !!}.gif"></p>
-                        @if($v->status == 0)
+                        @if($v->status == 1)
                             <p class="weui-media-box__desc">{!! $v->consignee !!} &nbsp;&nbsp; {!! $v->phone !!}</p>
                             <p class="weui-media-box__desc">{!! $v->sh_addr !!}{!! $v->address !!}</p>
                         @elseif($v->status == 2)
