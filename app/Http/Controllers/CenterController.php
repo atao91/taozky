@@ -15,11 +15,15 @@ use Illuminate\Support\Facades\Storage;
 class CenterController extends Controller
 {
     public function index(){
-        $userali = TzkUserAli::where(['user_id'=>Auth::user()->id,'status'=>'0'])->first();
+        $userali = TzkUserAli::where(['user_id'=>Auth::user()->id,'status'=>'1'])->first();
         return view('pages.center',['userali'=>$userali]);
     }
     public function setting(){
-        return view('pages.setting');
+        if (Auth::user()->status == 0){
+            return view('pages.setting_detail');
+        }else{
+            return view('pages.setting');
+        }
     }
     public function centerStore(Request $request){
         try{
