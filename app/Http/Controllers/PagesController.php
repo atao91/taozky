@@ -44,7 +44,7 @@ class PagesController extends Controller
         // 0- 接单
         $time    = date("Y-m-d H:i:s");
         DB::beginTransaction();
-        $ali = TzkUserAli::where(['user_id'=>Auth::user()->id,'status'=>0])->first();
+        $ali = TzkUserAli::where(['user_id'=>Auth::user()->id,'status'=>1])->first();
         if(empty($ali)){
             $response = [
                 'status'  => false,
