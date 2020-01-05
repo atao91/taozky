@@ -8,4 +8,9 @@ class RegisterController extends Controller
     {
         return view('common.register');
     }
+
+    public function reg()
+    {
+        return view('common.reg');
+    }
 }

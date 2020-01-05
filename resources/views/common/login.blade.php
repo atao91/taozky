@@ -20,9 +20,7 @@
     <![endif]-->
 </head>
 <body>
-
 <!-- 网站内容主体开始 -->
-
 <div class="mission">
     <!-- 返回上一级 -->
     <div class="nav-left">
@@ -54,7 +52,8 @@
                     </span>
                 @enderror
             </div>
-            <button class="weui-btn weui-btn_warn">登录</button >
+            <button class="weui-btn weui-btn_warn" style="width: 49%;float: left;margin-right: 1%">登录</button >
+            <a href="{{ route('reg') }}" class="weui-btn weui-btn_warn" style="width: 49%;float: left;margin-top: 0px;">注册</a >
         </form>
     </div>
 

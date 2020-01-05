@@ -62,13 +62,33 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $info = User::where('user_no',$data['yq'])->select('id')->first();
-        $insert = [
-            'name' => $data['name'],
-            'status' => 1,
-            'referrer' => $info->id,
-            'password' => Hash::make($data['password']),
-        ];
+        if(isset($data['yq'])){
+            $info = User::where('user_no',$data['yq'])->select('id')->first();
+            $insert = [
+                'name' => $data['name'],
+                'status' => 1,
+                'referrer' => $info->id,
+                'password' => Hash::make($data['password']),
+            ];
+        }else{
+            $map = [
+                'name' => $data['rec_phone'],
+                'username' => $data['rec_name'],
+            ];
+            $info = User::where($map)->select('id')->first();
+            $insert = [
+                'name' => $data['name'],
+                'status' => 1,
+                'rec_phone' => $data['rec_phone'],
+                'rec_name' => $data['rec_name'],
+                'rec_wechart' => $data['rec_wechart'],
+                'password' => Hash::make($data['password']),
+            ];
+            if ($info){
+                $insert['referrer'] =$info->id;
+            }
+
+        }
         return User::create($insert);
     }
 }
