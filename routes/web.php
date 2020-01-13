@@ -30,3 +30,5 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 Route::get('register', 'RegisterController@register')->name('register');  //会员设置
 Route::get('reg', 'RegisterController@reg')->name('reg');  //会员设置
 Route::post('login', 'Auth\LoginController@login')->name('login');
+
+Route::post('uploader_img', 'UploadimagesController@uploader_img')->name('uploader_img');  //绑定提交   图片提交
