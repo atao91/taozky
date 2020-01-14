@@ -174,7 +174,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        Mrgoon\AliSms\ServiceProvider::class
     ],
 
     /*
@@ -225,7 +225,10 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        /**
+         * 阿里云短信
+         */
+        'AliSms'=>Mrgoon\AliSms\ServiceProvider::class,
     ],
 
 ];

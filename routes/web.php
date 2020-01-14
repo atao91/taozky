@@ -32,3 +32,5 @@ Route::get('reg', 'RegisterController@reg')->name('reg');  //会员设置
 Route::post('login', 'Auth\LoginController@login')->name('login');
 
 Route::post('uploader_img', 'UploadimagesController@uploader_img')->name('uploader_img');  //绑定提交   图片提交
+Route::post('register/sendcode', 'RegisterController@sendUserCode')->name('register.sendcode');
+Route::post('register/regs', 'RegisterController@zhuce')->name('register.regs');

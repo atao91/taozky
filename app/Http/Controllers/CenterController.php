@@ -19,11 +19,13 @@ class CenterController extends Controller
         return view('pages.center',['userali'=>$userali]);
     }
     public function setting(){
-        if (Auth::user()->status == 0){
-            return view('pages.setting_detail');
-        }else{
-            return view('pages.setting');
-        }
+        $data = User::where('id',Auth::user()->id)->first();
+//        if (Auth::user()->status == 0){
+//            return view('pages.setting_detail');
+//        }else{
+//            return view('pages.setting');
+//        }
+        return view('pages.setting',['data'=>$data]);
     }
     public function centerStore(Request $request){
         try{

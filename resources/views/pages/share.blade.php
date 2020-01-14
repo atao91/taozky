@@ -28,7 +28,7 @@
                 </p>
             </div>
             <div class="weui-msg__opr-area">
-                <span id="target">{{ env('APP_URL').'/register?t='.Auth::user()->user_no }}</span>
+                <span id="target">{{ env('APP_URL').'/register?t='.Auth::user()->username }}</span>
                 <p class="weui-btn-area">
                     <button href="javascript:;" class="weui-btn weui-btn_primary btn" data-clipboard-action="copy" data-clipboard-target="#target" id="copy_btn" >复制链接</button>
                 </p>
@@ -38,7 +38,6 @@
                     <p class="weui-msg__desc" style="text-align: left">
                         介绍并邀请你的小伙伴来平台注册赚钱，只要你的小伙伴成功完成垫付单，你就可以享受小伙伴做单佣金成功奖励1元，动动小手，生活费就有。
                         推广有效期为一年，超过时间后无分成。
-                        w
                     </p>
                     <p>
                         认证完成后,就可以开始推广给小伙伴啦!!

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -50,9 +51,44 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required','regex:/^1[3|4|5|6|7|8][0-9]{9}$/', 'unique:tzk_users'],
+            'username' => ['required','regex:/^1[3|4|5|6|7|8][0-9]{9}$/', 'unique:tzk_users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'code' => [
+                'required', 'digits:4',
+                Rule::exists('tzk_user_code')->where(function ($query) {
+                    $limit_secords = date("Y-m-d H:i:s",strtotime('-5 minutes'));
+                    $query->where('mobile', \request()->username)->where('created_at','>=',$limit_secords);
+                }),
+            ],
+            'name' => ['required', 'string', 'max:30'],
+            'card_id' => ['required', 'min:18', 'max:18'],
+            'bank_name' => ['required', 'string', 'min:4'],
+            'bank_no' => ['required',  'max:20'],
+            'bank_addr' => ['required', 'max:100'],
+            'bank_branch' => ['required', 'max:50'],
+            'wechats' => ['required', 'max:50'],
+            'qq' => ['max:15'],
+            'id_card_img' => ['required'],
+            'bank_img' => ['required'],
         ]);
+    }
+
+    protected function attributes()
+    {
+        return [
+            'username' => '用户名',
+            'password' => '密码',
+            'code'      => '验证码',
+            'name' => '真实姓名',
+            'card_id' => '身份证号',
+            'bank_name' => '开户行',
+            'bank_no' => '银行卡号',
+            'bank_branch' => '开户支行',
+            'wechats' => '微信',
+            'qq' => 'QQ',
+            'id_card_img' => '身份证上传',
+            'bank_img' => '银行卡截图',
+        ];
     }
     /**
      * Create a new user instance after a valid registration.
@@ -62,33 +98,22 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        if(isset($data['yq'])){
-            $info = User::where('user_no',$data['yq'])->select('id')->first();
-            $insert = [
-                'name' => $data['name'],
-                'status' => 1,
-                'referrer' => $info->id,
-                'password' => Hash::make($data['password']),
-            ];
-        }else{
-            $map = [
-                'name' => $data['rec_phone'],
-                'username' => $data['rec_name'],
-            ];
-            $info = User::where($map)->select('id')->first();
-            $insert = [
-                'name' => $data['name'],
-                'status' => 1,
-                'rec_phone' => $data['rec_phone'],
-                'rec_name' => $data['rec_name'],
-                'rec_wechart' => $data['rec_wechart'],
-                'password' => Hash::make($data['password']),
-            ];
-            if ($info){
-                $insert['referrer'] =$info->id;
-            }
-
-        }
-        return User::create($insert);
+        $referrer = User::where('username',$data['jieshao'])->select('id')->first();
+        $data =  [
+            "username" => $data['username'],
+            "password" => Hash::make($data['password']),
+            "name" => $data['name'],
+            "wechats" => $data['wechats'],
+            "card_id" => $data['card_id'],
+            "bank_name" => $data['bank_name'],
+            "bank_branch" => $data['bank_branch'],
+            "bank_no" => $data['bank_no'],
+            "bank_addr" => $data['bank_addr'],
+            "referrer" => isset($referrer)?$referrer->id:null,
+            'status' => 1,
+            "id_card_img" => $data['id_card_img'],
+            "bank_img" => $data['bank_img'],
+        ];
+        return User::create($data);
     }
 }
