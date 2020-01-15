@@ -17,7 +17,7 @@
             </div>
         </div><!-- 返回上一级 -->
         <div class="weui-msg">
-            @if(Auth::user()->status == 0)
+            @if(Auth::user()->status == 0 && $info->people_num < 3)
             <div class="weui-msg__text-area">
                 <p class="weui-msg__desc" style="text-align: left">
                     介绍并邀请你的小伙伴来平台注册赚钱，只要你的小伙伴成功完成垫付单，你就可以享受小伙伴做单佣金成功奖励1元，动动小手，生活费就有。
@@ -28,11 +28,17 @@
                 </p>
             </div>
             <div class="weui-msg__opr-area">
-                <span id="target">{{ env('APP_URL').'/register?t='.Auth::user()->username }}</span>
+                <span id="target">{{ env('APP_URL').'/reg?t='.Auth::user()->username }}</span>
                 <p class="weui-btn-area">
                     <button href="javascript:;" class="weui-btn weui-btn_primary btn" data-clipboard-action="copy" data-clipboard-target="#target" id="copy_btn" >复制链接</button>
                 </p>
             </div>
+                @elseif($info->people_num >=3 )
+                <div class="weui-msg__text-area">
+                    <p>
+                        对不起,您的邀请名额已满!
+                    </p>
+                </div>
                 @else
                 <div class="weui-msg__text-area">
                     <p class="weui-msg__desc" style="text-align: left">

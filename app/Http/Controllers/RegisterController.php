@@ -18,6 +18,12 @@ class RegisterController extends Controller
 
     public function reg()
     {
+        if(isset(\request()->t)){
+            $info = User::where('username',\request()->t)->select('username','people_num')->first();
+            if($info->people_num > 3){
+                \request()->t = null;
+            }
+        }
         return view('common.reg');
     }
     /**

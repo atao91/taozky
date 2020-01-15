@@ -53,7 +53,8 @@ class CenterController extends Controller
      * 推广
      */
     public function share(){
-        return view('pages.share');
+        $info = User::where('id',Auth::user()->id)->select('username','people_num')->first();
+        return view('pages.share',['info'=>$info]);
     }
     /*
      * 绑定

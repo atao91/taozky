@@ -162,6 +162,19 @@
             </div>
             @enderror
         </div>
+        <div class="weui-cell @error('card_id') weui-cell_warn @enderror">
+            <div class="weui-cell__hd">
+                <label class="weui-label">身份证号</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" name="card_id" placeholder="身份证一致，填写后不可编辑更改" type="text" value="{{ old('card_id') }}" required>
+            </div>
+            @error('card_id')
+            <div class="weui-cell__ft">
+                <i class="weui-icon-warn"></i>
+            </div>
+            @enderror
+        </div>
         @error('name')
         <div class="weui-cells__tips" style="color: red" role="alert">{{ $message }}</div>
         @enderror
@@ -181,7 +194,6 @@
         @error('wechats')
         <div class="weui-cells__tips" style="color: red" role="alert">{{ $message }}</div>
         @enderror
-
         <div class="weui-cell @error('qq') weui-cell_warn @enderror">
             <div class="weui-cell__hd"><label class="weui-label">QQ</label></div>
             <div class="weui-cell__bd">
@@ -265,7 +277,7 @@
                 <label class="weui-label">介绍人</label>
             </div>
             <div class="weui-cell__bd">
-                <input class="weui-input" name="jieshao" placeholder="请输入介绍人的手机号" type="tel" value="{{ old('jieshao') }}" required >
+                <input class="weui-input" name="jieshao" placeholder="请输入介绍人的手机号" type="tel" value="{{ request()->t?request()->t:old('jieshao') }}">
             </div>
             @error('jieshao')
             <div class="weui-cell__ft">

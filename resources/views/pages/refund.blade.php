@@ -18,7 +18,7 @@
         </div><!-- 返回上一级 -->
         <div class="weui-cells" style="padding-bottom: 5px;">
             <div class="weui-cell weui-cell_access" href="javascript:;">
-                <div class="weui-cell__hd"><p>余额 <span style="color: red">{!! $data->amount !!}</span>元， 最少提现金额<span style="color: red">50</span>元</p></div>
+                <div class="weui-cell__hd"><p>余额 <span style="color: red">{!! $data->amount !!}</span>元， 最少提现金额<span style="color: red">10</span>元</p></div>
             </div>
         </div>
         <div class="weui-cells" style="padding-bottom: 5px;">
@@ -28,13 +28,15 @@
                 <div class="weui-cell__ft"></div>
             </div>
             <div class="user-exit" >
-                <input type="submit"  class="weui-btn weui-btn_warn" value="保存">
+                @if($data->amount >=10)
+                <input type="submit"  class="weui-btn weui-btn_warn" value="申请提现">
+                @endif
             </div>
         </div>
         <div id="list" class='weui-cells' style="margin-bottom:80px">
             <div class="weui-cell"> <h1>重要提醒:</h1></div>
             <div class="weui-cell">1.提现金额单位是元，不支持角分提现</div>
-            <div class="weui-cell">2.最少提现金额为50元</div>
+            <div class="weui-cell">2.最少提现金额为10元</div>
             <div class="weui-cell">3.银行卡请绑定我们指定的银行，工商银行、建设银行、农业银行、中国银行、民生银行、交通银行、招商银行</div>
             <div class="weui-cell">4.如提现未到帐,首先请检查所绑定的银行卡信息是否正确.（银行卡填写错误，请联系客服解绑重新绑定，如有银行退回，我们会重新返款）</div>
             <div class="weui-cell">5.提现时间15:00前，打款时间：15:00【15:00后提现的第二天15:00统一打款】，具体的到账时间根据银行受理情况决定，头一天下午三点后提现的和当天下午三点前提现的总金额会一笔打过去，请注意核对金额</div>
@@ -53,7 +55,7 @@
             $('.weui-btn_warn').click(function () {
                 amount = $('#amount').val();
                 if(amount < 10){
-                    $.toast("提现金额必须大于50", "cancel");
+                    $.toast("提现金额必须大于10", "cancel");
                     return false;
                 }
                 if(amount > {!! $data->amount !!}){

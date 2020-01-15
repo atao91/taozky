@@ -99,21 +99,55 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $referrer = User::where('username',$data['jieshao'])->select('id')->first();
-        $data =  [
-            "username" => $data['username'],
-            "password" => Hash::make($data['password']),
-            "name" => $data['name'],
-            "wechats" => $data['wechats'],
-            "card_id" => $data['card_id'],
-            "bank_name" => $data['bank_name'],
-            "bank_branch" => $data['bank_branch'],
-            "bank_no" => $data['bank_no'],
-            "bank_addr" => $data['bank_addr'],
-            "referrer" => isset($referrer)?$referrer->id:null,
-            'status' => 1,
-            "id_card_img" => $data['id_card_img'],
-            "bank_img" => $data['bank_img'],
-        ];
-        return User::create($data);
+        DB::beginTransaction();
+        try {
+            $data =  [
+                "username" => $data['username'],
+                "password" => Hash::make($data['password']),
+                "name" => $data['name'],
+                "wechats" => $data['wechats'],
+                "card_id" => $data['card_id'],
+                "bank_name" => $data['bank_name'],
+                "bank_branch" => $data['bank_branch'],
+                "bank_no" => $data['bank_no'],
+                "bank_addr" => $data['bank_addr'],
+                "referrer" => isset($referrer)?$referrer->id:null,
+                'status' => 1,
+                "id_card_img" => $data['id_card_img'],
+                "bank_img" => $data['bank_img'],
+                "created_at" => date("Y-m-d H:i:s"),
+                "updated_at" => date("Y-m-d H:i:s"),
+            ];
+            $id = DB::table('tzk_users')->insertGetId($data);
+            if (isset($referrer)){
+                DB::table('tzk_users')->where('id',$referrer->id)->increment('people_num');
+            }
+            DB::commit();
+            return User::where('id',$id)->first();
+        }catch (\Exception $e){
+            DB::rollBack();
+            return false;
+        }
+//
+//
+//        $data =  [
+//            "username" => $data['username'],
+//            "password" => Hash::make($data['password']),
+//            "name" => $data['name'],
+//            "wechats" => $data['wechats'],
+//            "card_id" => $data['card_id'],
+//            "bank_name" => $data['bank_name'],
+//            "bank_branch" => $data['bank_branch'],
+//            "bank_no" => $data['bank_no'],
+//            "bank_addr" => $data['bank_addr'],
+//            "referrer" => isset($referrer)?$referrer->id:null,
+//            'status' => 1,
+//            "id_card_img" => $data['id_card_img'],
+//            "bank_img" => $data['bank_img'],
+//            "created_at" => date("Y-m-d H:i:s"),
+//            "updated_at" => date("Y-m-d H:i:s"),
+//        ];
+//
+//        return User::create($data);
     }
 }

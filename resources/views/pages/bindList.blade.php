@@ -32,7 +32,7 @@
                         @if($v->status == 1)
                             <p class="weui-media-box__desc">{!! $v->consignee !!} &nbsp;&nbsp; {!! $v->phone !!}</p>
                             <p class="weui-media-box__desc">{!! $v->sh_addr !!}{!! $v->address !!}</p>
-                        @elseif($v->status == 2)
+                        @elseif($v->status == 0)
                             <p class="weui-media-box__desc">待审核</p>
                         @else
                             <p class="weui-media-box__desc"><span style="color: #2ea8e5;">审核不通过原因:{!! $v->app_remark !!}</span> </p>
