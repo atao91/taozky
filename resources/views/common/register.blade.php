@@ -280,7 +280,7 @@
     <div class="weui-cells weui-cells_form  @error('id_card_img') weui-cell_warn @enderror" style="padding: 10px 15px;">
         <div class="weui-uploader">
             <div class="weui-uploader__hd">
-                <p class="weui-uploader__title">身份证上传</p>
+                <p class="weui-uploader__title">身份证上传<span style="color: red">(允许隐藏4位)</span></p>
                 {{--                <div class="weui-uploader__info">0/1</div>--}}
             </div>
             <div class="weui-uploader__bd">
@@ -304,7 +304,7 @@
     <div class="weui-cells weui-cells_form   @error('bank_img') weui-cell_warn @enderror"  style="padding: 10px 15px;">
         <div class="weui-uploader">
             <div class="weui-uploader__hd">
-                <p class="weui-uploader__title">银行卡上传</p>
+                <p class="weui-uploader__title">银行卡上传 <span style="color: red">(允许隐藏4位)</span></p>
                 {{--                <div class="weui-uploader__info">0/1</div>--}}
             </div>
             <div class="weui-uploader__bd">
@@ -333,7 +333,7 @@
         <div class="weui-flex__item wj-mm"><a href="{{ route('login') }}">已经注册，去登录</a></div>
     </div>
     <div class="weui-btn-area">
-        <button class="weui-btn weui-btn_primary"  id="btn">{{ __('Register') }}</button>
+        <button class="weui-btn weui-btn_primary"  id="btn">{{ __('立即注册') }}</button>
     </div>
 </form>
 <script>
